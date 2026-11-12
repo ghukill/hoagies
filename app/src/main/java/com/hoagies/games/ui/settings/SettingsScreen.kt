@@ -54,6 +54,7 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = viewModel(factory = SettingsViewModel.Factory),
 ) {
     val settings by viewModel.settings.collectAsStateWithLifecycle()
+    val tileSets by viewModel.mahjongTileSets.collectAsStateWithLifecycle()
     var confirmErase by rememberSaveable { mutableStateOf(false) }
     var erased by rememberSaveable { mutableStateOf(false) }
 
@@ -130,6 +131,34 @@ fun SettingsScreen(
                     checked = sudoku.showTimer,
                     onChange = { on -> viewModel.update { it.copy(sudoku = it.sudoku.copy(showTimer = on)) } },
                 )
+
+                SectionHeader("Mahjong Solitaire")
+                val mahjong = settings.mahjong
+                SwitchRow(
+                    title = "Darken stuck tiles",
+                    description = "Tiles you can't pick yet look darker, so the free ones stand out.",
+                    checked = mahjong.dimBlockedTiles,
+                    onChange = { on -> viewModel.update { it.copy(mahjong = it.mahjong.copy(dimBlockedTiles = on)) } },
+                )
+                SwitchRow(
+                    title = "Show the clock",
+                    description = "Off by default — take all the time you like.",
+                    checked = mahjong.showTimer,
+                    onChange = { on -> viewModel.update { it.copy(mahjong = it.mahjong.copy(showTimer = on)) } },
+                )
+                if (tileSets.size > 1) {
+                    Text(
+                        "Tile style",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(top = 12.dp),
+                    )
+                    ChoiceGroup(
+                        options = tileSets,
+                        selected = tileSets.firstOrNull { it.id == mahjong.tileSet } ?: tileSets.first(),
+                        label = { it.name },
+                        onSelect = { set -> viewModel.update { it.copy(mahjong = it.mahjong.copy(tileSet = set.id)) } },
+                    )
+                }
 
                 SectionHeader("Our promise")
                 PromiseCard()

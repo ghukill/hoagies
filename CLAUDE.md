@@ -15,5 +15,9 @@ see README.md for layout and the "adding a game" recipe.
   `contentDescription`s; no time pressure by default; plain, warm wording ("Start over", not "Reset").
 - Saved-game ids (`SudokuGame.ID`, …) and Room tables are player data: never rename them; bump the
   DB version with a real Migration (schemas are exported to `app/schemas/`), never destructive migration.
+- Never edit a shipped Mahjong board layout (saved games map tiles by position index); add a new one.
 - Keep game rules in pure Kotlin `engine/` packages with unit tests; UI state in ViewModels.
+- Lobbies reuse `ui/components/GameLobby.kt` (ContinueCard, ChoiceCard, ProgressCard, HowToPlayDialog)
+  and play screens use `games/common/GameClock`.
+- Plans and ideas live in `docs/ROADMAP.md`; keep it current when features land.
 - Libraries are pinned in `gradle/libs.versions.toml`; DI is the hand-rolled `AppContainer` (no Hilt).

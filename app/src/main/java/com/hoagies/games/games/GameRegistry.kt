@@ -2,8 +2,11 @@ package com.hoagies.games.games
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.GridOn
+import androidx.compose.material.icons.rounded.Layers
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.hoagies.games.games.mahjong.MahjongGame
 import com.hoagies.games.games.sudoku.SudokuGame
+import com.hoagies.games.ui.navigation.MahjongLobbyRoute
 import com.hoagies.games.ui.navigation.SudokuLobbyRoute
 
 /** What the home screen needs to know about a game. */
@@ -30,8 +33,15 @@ object GameRegistry {
             icon = Icons.Rounded.GridOn,
             route = SudokuLobbyRoute,
         ),
+        GameInfo(
+            id = MahjongGame.ID,
+            title = "Mahjong Solitaire",
+            tagline = "Match pairs of tiles to clear the board.",
+            icon = Icons.Rounded.Layers,
+            route = MahjongLobbyRoute,
+        ),
     )
 
     /** Shown on the home screen so people know more is on the way. */
-    val comingSoon: List<String> = listOf("Solitaire", "Word Search", "Mahjong", "Crosswords")
+    val comingSoon: List<String> = listOf("Solitaire", "Word Search", "Crosswords")
 }

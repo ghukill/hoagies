@@ -5,6 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.hoagies.games.games.mahjong.ui.MahjongLobbyScreen
+import com.hoagies.games.games.mahjong.ui.MahjongPlayScreen
 import com.hoagies.games.games.sudoku.ui.SudokuLobbyScreen
 import com.hoagies.games.games.sudoku.ui.SudokuPlayScreen
 import com.hoagies.games.ui.home.HomeScreen
@@ -37,6 +39,17 @@ fun HoagiesNavHost(navController: NavHostController = rememberNavController()) {
         }
         composable<SudokuPlayRoute> {
             SudokuPlayScreen(onBack = goBack)
+        }
+        composable<MahjongLobbyRoute> {
+            MahjongLobbyScreen(
+                onBack = goBack,
+                onPlay = { layout ->
+                    navController.navigate(MahjongPlayRoute(layout?.id)) { launchSingleTop = true }
+                },
+            )
+        }
+        composable<MahjongPlayRoute> {
+            MahjongPlayScreen(onBack = goBack)
         }
     }
 }

@@ -137,7 +137,7 @@ fun SudokuPlayScreen(
             },
             onDismiss = { dialog = PlayDialog.None },
         )
-        PlayDialog.HowToPlay -> HowToPlayDialog(onDismiss = { dialog = PlayDialog.None })
+        PlayDialog.HowToPlay -> SudokuHowToPlayDialog(onDismiss = { dialog = PlayDialog.None })
     }
 
     if (ui.justSolved && game != null) {

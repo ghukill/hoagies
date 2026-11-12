@@ -4,7 +4,8 @@ Classic games, safely. One Android app with familiar favourites — **no ads, no
 no internet, no tracking, no pressure** — built first for older players who've been burned by
 predatory "free" games and malware look-alikes, and designed so everyone else enjoys it too.
 
-First game: **Sudoku**. More (Solitaire, Word Search, Mahjong, Crosswords…) to follow.
+Games so far: **Sudoku** and **Mahjong Solitaire**. More to follow — see
+[docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Principles
 
@@ -60,6 +61,16 @@ app/src/main/java/com/hoagies/games/
    `recordResult(...)` when a game ends. Pick a stable `ID` — it keys the player's history.
 3. Add routes to `ui/navigation/Routes.kt` and `HoagiesNavHost.kt`.
 4. Add a `GameInfo` to `GameRegistry.games`.
+
+## Mahjong Solitaire notes
+
+Every deal can be cleared: the dealer "plays" the empty board first, removing random free
+pairs, then assigns matching faces to those pairs. Shuffle re-deals the remaining tiles the
+same way. Boards live in `games/mahjong/engine/MahjongLayouts.kt`.
+
+Tile artwork is swappable: drop images into `app/src/main/assets/mahjong/tilesets/<name>/`
+(file names in the README there) and the set appears in Settings. Missing faces fall back to
+the built-in "Simple shapes".
 
 ## Sudoku notes
 

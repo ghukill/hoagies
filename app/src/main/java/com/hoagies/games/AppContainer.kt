@@ -5,6 +5,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.hoagies.games.data.memory.GameMemory
 import com.hoagies.games.data.memory.HoagiesDatabase
 import com.hoagies.games.data.settings.SettingsRepository
+import com.hoagies.games.games.mahjong.tiles.TileSetRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -18,4 +19,5 @@ class AppContainer(context: Context) {
 
     val settings = SettingsRepository(context.settingsDataStore)
     val memory = GameMemory(database.savedGames(), database.results(), appScope)
+    val mahjongTileSets = TileSetRepository(context.assets)
 }

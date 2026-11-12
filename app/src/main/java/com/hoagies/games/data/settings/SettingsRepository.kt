@@ -32,6 +32,9 @@ class SettingsRepository(private val dataStore: DataStore<Preferences>) {
         val sudokuHighlightSame = booleanPreferencesKey("sudoku_highlight_same")
         val sudokuShowMistakes = booleanPreferencesKey("sudoku_show_mistakes")
         val sudokuAutoRemoveNotes = booleanPreferencesKey("sudoku_auto_remove_notes")
+        val mahjongTileSet = stringPreferencesKey("mahjong_tile_set")
+        val mahjongDimBlocked = booleanPreferencesKey("mahjong_dim_blocked")
+        val mahjongShowTimer = booleanPreferencesKey("mahjong_show_timer")
     }
 
     private fun Preferences.toSettings(): AppSettings {
@@ -47,6 +50,11 @@ class SettingsRepository(private val dataStore: DataStore<Preferences>) {
                 showMistakes = this[Keys.sudokuShowMistakes] ?: d.sudoku.showMistakes,
                 autoRemoveNotes = this[Keys.sudokuAutoRemoveNotes] ?: d.sudoku.autoRemoveNotes,
             ),
+            mahjong = MahjongSettings(
+                tileSet = this[Keys.mahjongTileSet] ?: d.mahjong.tileSet,
+                dimBlockedTiles = this[Keys.mahjongDimBlocked] ?: d.mahjong.dimBlockedTiles,
+                showTimer = this[Keys.mahjongShowTimer] ?: d.mahjong.showTimer,
+            ),
         )
     }
 
@@ -59,6 +67,9 @@ class SettingsRepository(private val dataStore: DataStore<Preferences>) {
         this[Keys.sudokuHighlightSame] = s.sudoku.highlightSameNumbers
         this[Keys.sudokuShowMistakes] = s.sudoku.showMistakes
         this[Keys.sudokuAutoRemoveNotes] = s.sudoku.autoRemoveNotes
+        this[Keys.mahjongTileSet] = s.mahjong.tileSet
+        this[Keys.mahjongDimBlocked] = s.mahjong.dimBlockedTiles
+        this[Keys.mahjongShowTimer] = s.mahjong.showTimer
     }
 
     private inline fun <reified E : Enum<E>> enumOr(name: String?, default: E): E =

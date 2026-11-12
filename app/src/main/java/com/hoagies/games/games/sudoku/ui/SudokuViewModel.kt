@@ -10,13 +10,12 @@ import com.hoagies.games.appContainer
 import com.hoagies.games.data.memory.GameMemory
 import com.hoagies.games.data.settings.SettingsRepository
 import com.hoagies.games.data.settings.SudokuSettings
+import com.hoagies.games.games.common.GameClock
 import com.hoagies.games.games.sudoku.SudokuGame
 import com.hoagies.games.games.sudoku.engine.Difficulty
 import com.hoagies.games.games.sudoku.engine.SudokuGameState
 import com.hoagies.games.games.sudoku.engine.SudokuGenerator
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +23,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -53,15 +51,11 @@ class SudokuViewModel(
         .map { it.sudoku }
         .stateIn(viewModelScope, SharingStarted.Eagerly, SudokuSettings())
 
-    /**
-     * The clock lives apart from [ui] so the board doesn't redraw every second.
-     * It is folded back into the game state whenever the game is saved.
-     */
-    private val _elapsedSeconds = MutableStateFlow(0L)
-    val elapsedSeconds: StateFlow<Long> = _elapsedSeconds.asStateFlow()
+    /** Folded back into the game state whenever the game is saved. */
+    private val clock = GameClock(viewModelScope)
+    val elapsedSeconds: StateFlow<Long> = clock.elapsed
 
     private val undoStack = ArrayDeque<SudokuGameState>()
-    private var timerJob: Job? = null
     private var isResumed = false
 
     init {
@@ -92,7 +86,7 @@ class SudokuViewModel(
 
     private fun show(game: SudokuGameState) {
         undoStack.clear()
-        _elapsedSeconds.value = game.elapsedSeconds
+        clock.reset(game.elapsedSeconds)
         _ui.value = SudokuUiState(isLoading = false, game = game)
         maybeStartTimer()
     }
@@ -182,7 +176,7 @@ class SudokuViewModel(
         memory.recordResult(
             gameId = SudokuGame.ID,
             variant = game.difficulty.name,
-            durationSeconds = _elapsedSeconds.value,
+            durationSeconds = clock.seconds,
             hintsUsed = game.hintsUsed,
             mistakes = game.mistakes,
         )
@@ -192,26 +186,16 @@ class SudokuViewModel(
     private fun persist() {
         val game = _ui.value.game ?: return
         if (!game.isComplete) {
-            memory.save(SudokuGame.ID, SudokuGameState.serializer(), game.copy(elapsedSeconds = _elapsedSeconds.value))
+            memory.save(SudokuGame.ID, SudokuGameState.serializer(), game.copy(elapsedSeconds = clock.seconds))
         }
     }
 
     private fun maybeStartTimer() {
-        if (!isResumed || timerJob?.isActive == true) return
         val game = _ui.value.game ?: return
-        if (game.isComplete) return
-        timerJob = viewModelScope.launch {
-            while (isActive) {
-                delay(1_000)
-                if (_ui.value.game?.isComplete == false) _elapsedSeconds.update { it + 1 }
-            }
-        }
+        if (isResumed && !game.isComplete) clock.start()
     }
 
-    private fun stopTimer() {
-        timerJob?.cancel()
-        timerJob = null
-    }
+    private fun stopTimer() = clock.stop()
 
     companion object {
         /** Must match the property name in SudokuPlayRoute. */

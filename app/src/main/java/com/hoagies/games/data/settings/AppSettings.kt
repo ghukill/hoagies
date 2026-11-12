@@ -20,10 +20,18 @@ data class SudokuSettings(
     val autoRemoveNotes: Boolean = true,
 )
 
+data class MahjongSettings(
+    /** Id of the chosen tile set; see TileSetRepository. */
+    val tileSet: String = "simple",
+    val dimBlockedTiles: Boolean = true,
+    val showTimer: Boolean = false,
+)
+
 data class AppSettings(
     val textSize: TextSize = TextSize.STANDARD,
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val highContrast: Boolean = false,
     val haptics: Boolean = true,
     val sudoku: SudokuSettings = SudokuSettings(),
+    val mahjong: MahjongSettings = MahjongSettings(),
 )
