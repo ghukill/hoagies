@@ -1,6 +1,6 @@
 # Hoagies — agent notes
 
-Android (Kotlin, Jetpack Compose, Material 3) collection of classic games for older players;
+Android (Kotlin, Jetpack Compose, Material 3) collection of classic games, built on universal design;
 see README.md for layout and the "adding a game" recipe.
 
 ## Build

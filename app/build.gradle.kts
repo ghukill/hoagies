@@ -14,11 +14,11 @@ android {
 
     defaultConfig {
         applicationId = "com.hoagies.games"
-        // Android 8.0+. Older relatives often keep older phones, so stay generous here.
+        // Android 8.0+. Plenty of people keep phones for years, so stay generous here.
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 2
+        versionName = "0.1.1"
     }
 
     buildTypes {

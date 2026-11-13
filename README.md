@@ -1,8 +1,8 @@
 # Hoagies
 
 Classic games, safely. One Android app with familiar favourites — **no ads, no purchases,
-no internet, no tracking, no pressure** — built first for older players who've been burned by
-predatory "free" games and malware look-alikes, and designed so everyone else enjoys it too.
+no internet, no tracking, no pressure** — a calm, trustworthy alternative to predatory "free"
+games and malware look-alikes, built on universal design so it's comfortable for everyone.
 
 Games so far: **Sudoku** and **Mahjong Solitaire**. More to follow — see
 [docs/ROADMAP.md](docs/ROADMAP.md).

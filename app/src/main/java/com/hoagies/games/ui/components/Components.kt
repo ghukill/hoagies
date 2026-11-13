@@ -32,12 +32,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
-/** Minimum height for anything tappable. Well above the 48dp guideline, for shaky hands. */
+/** Minimum height for anything tappable. Well above the 48dp guideline, so taps land easily. */
 val BigTouchTarget = 64.dp
 
 /**
  * Top bar with a *labelled* back button ("← Back") rather than a bare arrow,
- * which many less-confident users don't recognise.
+ * which is clearer for everyone than an icon alone.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
